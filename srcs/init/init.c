@@ -118,7 +118,6 @@ void	init_data(t_data *data, char *filename)
 	set_default_values(data);
 	get_elements(data);
 	get_map(data);
-	show_data(*data);
 	check_map(data);
 	init_mlx(data);
 	init_textures(data);
