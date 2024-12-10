@@ -14,13 +14,12 @@ static void	sleep_based_on_max_fps(t_data *data, int max_fps)
 		time_since_last_frame = timenow() - data->mlx.last_frame;
 }
 
-/*
-frames per second = one second / seconds since last frame
-*/
+/*frames per second = one second / seconds since last frame*/
 static void	show_fps(t_data *data)
 {
 	static long long	last_print = 0;
 	static int			fps = 0;
+	char				*fps_string;
 
 	// printf("Now: %lld, Last time: %lld, Diff: %lld\n", timenow(), data->mlx.last_frame, timenow() - data->mlx.last_frame);
 	if (timenow() - last_print >= FPS_INTERVAL)
@@ -28,7 +27,9 @@ static void	show_fps(t_data *data)
 		last_print = timenow();
 		fps = 1000 / (timenow() - data->mlx.last_frame);
 	}
-	mlx_string_put(data->mlx.ptr, data->mlx.win, 20, 20, RED, ft_itoa(fps));
+	fps_string = ft_itoa(fps);
+	mlx_string_put(data->mlx.ptr, data->mlx.win, 20, 20, RED, fps_string);
+	free(fps_string);
 }
 
 static void	new_img(t_mlx_data mlx, t_img *img)

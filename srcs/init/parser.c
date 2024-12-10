@@ -32,6 +32,20 @@ static void	get_element(char **elem, t_data *data)
 		exit_free(ERR_MALLOC, data);
 }
 
+static bool all_textures_parsed(t_data *data)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < 6)
+	{
+		if (data->s_textures[i] == NULL)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 /**
 * @date 21/10/2024
 * @file parser.c
@@ -42,24 +56,23 @@ static void	get_element(char **elem, t_data *data)
 **/
 void	get_elements(t_data *data)
 {
-	while (!data->N_texture || !data->S_texture || !data->E_texture
-		|| !data->W_texture || !data->F_color || !data->C_color)
+	while (all_textures_parsed(data) == false)
 	{
 		data->tmp = skip_empty_lines(data->fd);
 		if (data->tmp == NULL)
 			exit_free(ERR_ID_MISSING, data);
 		if (ft_strncmp(data->tmp, "NO", 2) == 0)
-			get_element(&data->N_texture, data);
+			get_element(&data->s_textures[T_NORTH], data);
 		else if (ft_strncmp(data->tmp, "SO", 2) == 0)
-			get_element(&data->S_texture, data);
+			get_element(&data->s_textures[T_SOUTH], data);
 		else if (ft_strncmp(data->tmp, "WE", 2) == 0)
-			get_element(&data->W_texture, data);
+			get_element(&data->s_textures[T_WEST], data);
 		else if (ft_strncmp(data->tmp, "EA", 2) == 0)
-			get_element(&data->E_texture, data);
+			get_element(&data->s_textures[T_EAST], data);
 		else if (ft_strncmp(data->tmp, "F", 1) == 0)
-			get_element(&data->F_color, data);
+			get_element(&data->s_textures[T_FLOOR], data);
 		else if (ft_strncmp(data->tmp, "C", 1) == 0)
-			get_element(&data->C_color, data);
+			get_element(&data->s_textures[T_CEILING], data);
 		else
 			exit_free(ERR_ID_MISSING, data);
 		free(data->tmp);

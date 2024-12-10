@@ -2,7 +2,7 @@
 # define DEFINES_H
 
 /*game*/
-# define TITLE "cul3d"
+# define TITLE "cub3d"
 # define BLOCK_SIZE 32
 # define SETTINGS_X 10 / 2
 # define SETTINGS_Y 10 / 2
@@ -58,28 +58,29 @@
 # define BLACK 0x000000
 # define GRAY 0x808080
 /*error codes*/
-#define ERR_UNDEFINED 0
-#define ERR_ARG_COUNT 1
-#define ERR_ARG_EXT 2
-#define ERR_ARG_NAME 3
-#define ERR_FILE_OPEN 4
-#define ERR_FILE_READ 5
-#define ERR_FILE_EMPTY 6
-#define ERR_ID_MISSING 7
-#define ERR_VALUE_MISSING 8
-#define ERR_VALUE_ERROR 8
-#define ERR_MALLOC 10
-#define ERR_MAP_MISSING 11
-#define ERR_MAP_CHAR 12
-#define ERR_MAP_WALL 13
-#define ERR_MAP_PLAYER 14
+# define ERR_UNDEFINED 0
+# define ERR_ARG_COUNT 1
+# define ERR_ARG_EXT 2
+# define ERR_ARG_NAME 3
+# define ERR_FILE_OPEN 4
+# define ERR_FILE_READ 5
+# define ERR_FILE_EMPTY 6
+# define ERR_ID_MISSING 7
+# define ERR_VALUE_MISSING 8
+# define ERR_VALUE_ERROR 8
+# define ERR_MALLOC 10
+# define ERR_MAP_MISSING 11
+# define ERR_MAP_CHAR 12
+# define ERR_MAP_WALL 13
+# define ERR_MAP_PLAYER 14
+# define ERR_TEXTURE 15
 /*images*/
-#define SNIPER 0
-#define SCOPE 1
-#define NORTH 2
-#define SOUTH 3
-#define WEST 4
-#define EAST 5
+# define T_FLOOR 0
+# define T_CEILING 1
+# define T_NORTH 2
+# define T_SOUTH 3
+# define T_WEST 4
+# define T_EAST 5
 /*structs*/
 typedef struct	s_pos{
 	double	x;
@@ -154,12 +155,7 @@ typedef struct	s_data{
 	char		**map;
 	size_t		map_width;
 	size_t		map_height;
-	char		*N_texture;
-	char		*S_texture;
-	char		*W_texture;
-	char		*E_texture;
-	char		*F_color;
-	char		*C_color;
+	char		*s_textures[6];
 	int			conv_floor;
 	int			conv_ceiling;
 	t_textures	textures;

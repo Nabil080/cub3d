@@ -1,5 +1,3 @@
-#include "cub3d.h"
-
 static int	get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 {
 	t_img texture;
@@ -8,13 +6,13 @@ static int	get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 	int color;
 
 	if (ray.hit == 'W')
-		texture = data->img[WEST];
+		texture = data->img[T_WEST];
 	else if (ray.hit == 'E')
-		texture = data->img[EAST];
+		texture = data->img[T_EAST];
 	else if (ray.hit == 'S')
-		texture = data->img[SOUTH];
+		texture = data->img[T_SOUTH];
 	else if (ray.hit == 'N')
-		texture = data->img[NORTH];
+		texture = data->img[T_NORTH];
 	if (ray.end.x - floor(ray.end.x) > ray.end.y - floor(ray.end.y))
 		step = ray.end.x - floor(ray.end.x);
 	else

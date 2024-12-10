@@ -19,6 +19,7 @@ static const char	*g_error_messages[50] = {
 	"The map has an invalid character.",
 	"The map isn't surrounded by walls.",
 	"The map must have one and only one player.",
+	"A texture couldn't be loaded",
 	NULL,
 };
 
@@ -57,11 +58,14 @@ void	exit_free(int code, t_data *data)
 **/
 static void	free_mlx(t_mlx_data mlx)
 {
+	size_t	i;
+
 	if (mlx.win)
 		mlx_destroy_window(mlx.ptr, mlx.win);
 	if (mlx.minimap.img)
 		mlx_destroy_image(mlx.ptr, mlx.minimap.img);
 	mlx_destroy_display(mlx.ptr);
+	i = 0;
 	free(mlx.ptr);
 }
 
@@ -73,26 +77,26 @@ static void	free_mlx(t_mlx_data mlx)
 **/
 void	free_data(t_data *data)
 {
+	size_t	i;
+
+	i = 0;
+	while (i < 6)
+	{
+		if (data->img[i].img)
+			mlx_destroy_image(data->mlx.ptr, data->img[i].img);
+		i++;
+	}
 	if (data->mlx.ptr)
 		free_mlx(data->mlx);
-	if (data->N_texture != NULL)
-		free(data->N_texture);
-	if (data->S_texture != NULL)
-		free(data->S_texture);
-	if (data->W_texture != NULL)
-		free(data->W_texture);
-	if (data->E_texture != NULL)
-		free(data->E_texture);
-	if (data->F_color != NULL)
-		free(data->F_color);
-	if (data->C_color != NULL)
-		free(data->C_color);
 	if (data->map != NULL)
 		free_2d((void *)data->map, 0);
 	if (data->tmp != NULL)
 		free(data->tmp);
 	if (data->fd > 0)
 		close(data->fd);
+	if (data->mlx.game.img != NULL)
+		mlx_destroy_image(data->mlx.ptr, data->mlx.game.img);
+	
 }
 
 /**
@@ -103,7 +107,8 @@ void	free_data(t_data *data)
 int	exit_game(t_data *data)
 {
 	printf("Exiting the game\n");
-	free_data(data);
+	if (data)
+		free_data(data);
 	exit(0);
 	return (0);
 }

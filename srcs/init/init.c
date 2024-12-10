@@ -22,12 +22,12 @@ static void	set_default_values(t_data *data)
 	data->player.angle = 0;
 	data->player.z_tilt = 0;
 	data->player.velocity = 0;
-	data->N_texture = NULL;
-	data->S_texture = NULL;
-	data->W_texture = NULL;
-	data->E_texture = NULL;
-	data->F_color = NULL;
-	data->C_color = NULL;
+	data->s_textures[T_NORTH] = NULL;
+	data->s_textures[T_WEST] = NULL;
+	data->s_textures[T_SOUTH] = NULL;
+	data->s_textures[T_EAST] = NULL;
+	data->s_textures[T_FLOOR] = NULL;
+	data->s_textures[T_CEILING] = NULL;
 	data->map = NULL;
 	data->tmp = NULL;
 	data->mlx.last_frame = timenow();
@@ -63,14 +63,21 @@ static void	init_mlx(t_data *data)
 		exit_free(ERR_MALLOC, data);
 }
 
-
-void	safe_texture(t_data *data, int name, char *path)
+static void	safe_texture(t_data *data, int name)
 {
 	data->img[name].img = mlx_xpm_file_to_image(data->mlx.ptr,
-			path, &data->img[name].width, &data->img[name].height);
+			data->s_textures[name],
+			&data->img[name].width, &data->img[name].height);
 	if (!data->img[name].img)
-		exit_free(ERR_UNDEFINED, data);
- 	data->img[name].addr = (char *)mlx_get_data_addr(data->img[name].img, &data->img[name].bits_per_pixel, &data->img[name].line_length,  &data->img[name].endian);
+		exit_free(ERR_TEXTURE, data);
+	data->img[name].addr = (char *)mlx_get_data_addr(
+			data->img[name].img,
+			&data->img[name].bits_per_pixel,
+			&data->img[name].line_length,
+			&data->img[name].endian
+			);
+	free(data->s_textures[name]);
+	data->s_textures[name] = NULL;
 }
 
 /**/
@@ -83,15 +90,16 @@ void	safe_texture(t_data *data, int name, char *path)
 **/
 static void	init_textures(t_data *data)
 {
-
-	safe_texture(data, SNIPER, "assets/textures/sniper.xpm");
-	safe_texture(data, SCOPE, "assets/textures/scope.xpm");
-	safe_texture(data, NORTH, data->N_texture);
-	safe_texture(data, SOUTH, data->S_texture);
-	safe_texture(data, WEST, data->W_texture);
-	safe_texture(data, EAST, data->E_texture);
-	data->conv_ceiling = rgb_convertor(data->C_color);
-	data->conv_floor = rgb_convertor(data->F_color);
+	safe_texture(data, T_NORTH);
+	safe_texture(data, T_SOUTH);
+	safe_texture(data, T_WEST);
+	safe_texture(data, T_EAST);
+	data->conv_ceiling = rgb_convertor(data->s_textures[T_CEILING]);
+	free(data->s_textures[T_CEILING]);
+	data->s_textures[T_CEILING] = NULL;
+	data->conv_floor = rgb_convertor(data->s_textures[T_FLOOR]);
+	free(data->s_textures[T_FLOOR]);
+	data->s_textures[T_FLOOR] = NULL;
 }
 
 /**
@@ -109,6 +117,7 @@ void	init_data(t_data *data, char *filename)
 	set_default_values(data);
 	get_elements(data);
 	get_map(data);
+	show_data(*data);
 	check_map(data);
 	init_mlx(data);
 	init_textures(data);
