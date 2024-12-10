@@ -9,6 +9,8 @@ static void	set_default_values(t_data *data)
 {
 	data->controls.down = false;
 	data->controls.up = false;
+	size_t	i;
+
 	data->controls.left = false;
 	data->controls.right = false;
 	data->controls.sprint = false;
@@ -22,15 +24,14 @@ static void	set_default_values(t_data *data)
 	data->player.angle = 0;
 	data->player.z_tilt = 0;
 	data->player.velocity = 0;
-	data->s_textures[T_NORTH] = NULL;
-	data->s_textures[T_WEST] = NULL;
-	data->s_textures[T_SOUTH] = NULL;
-	data->s_textures[T_EAST] = NULL;
-	data->s_textures[T_FLOOR] = NULL;
-	data->s_textures[T_CEILING] = NULL;
+	i = 0;
+	while (i < 6)
+	{
+		data->s_textures[i] = NULL;
+		data->img[i++].img = NULL;
+	}
 	data->map = NULL;
 	data->tmp = NULL;
-	data->mlx.last_frame = timenow();
 	data->mlx.ptr = NULL;
 	data->mlx.win = NULL;
 	data->mlx.minimap.img = NULL;

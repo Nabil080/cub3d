@@ -56,16 +56,22 @@ void	exit_free(int code, t_data *data)
 * @file exit.c
 * @brief destroy everything mlx related (image, window...)
 **/
-static void	free_mlx(t_mlx_data mlx)
+static void	free_mlx(t_mlx_data mlx, t_data *data)
 {
 	size_t	i;
 
+	i = 0;
+	while (i < 6)
+	{
+		if (data->img[i].img)
+			mlx_destroy_image(data->mlx.ptr, data->img[i].img);
+		i++;
+	}
 	if (mlx.win)
 		mlx_destroy_window(mlx.ptr, mlx.win);
 	if (mlx.minimap.img)
 		mlx_destroy_image(mlx.ptr, mlx.minimap.img);
 	mlx_destroy_display(mlx.ptr);
-	i = 0;
 	free(mlx.ptr);
 }
 
@@ -82,21 +88,18 @@ void	free_data(t_data *data)
 	i = 0;
 	while (i < 6)
 	{
-		if (data->img[i].img)
-			mlx_destroy_image(data->mlx.ptr, data->img[i].img);
+		if (data->s_textures[i])
+			free(data->s_textures[i]);
 		i++;
 	}
 	if (data->mlx.ptr)
-		free_mlx(data->mlx);
+		free_mlx(data->mlx, data);
 	if (data->map != NULL)
 		free_2d((void *)data->map, 0);
 	if (data->tmp != NULL)
 		free(data->tmp);
 	if (data->fd > 0)
 		close(data->fd);
-	if (data->mlx.game.img != NULL)
-		mlx_destroy_image(data->mlx.ptr, data->mlx.game.img);
-	
 }
 
 /**

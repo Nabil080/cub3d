@@ -32,7 +32,7 @@ static void	get_element(char **elem, t_data *data)
 		exit_free(ERR_MALLOC, data);
 }
 
-static bool all_textures_parsed(t_data *data)
+static bool	all_textures_parsed(t_data *data)
 {
 	size_t	i;
 
