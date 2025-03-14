@@ -4,7 +4,7 @@
 
 **cub3D** is a first-person 3D maze exploration game inspired by **Wolfenstein 3D**. It implements **raycasting** to create a pseudo-3D effect using **MiniLibX**. The project includes features like **collision handling**, a **minimap**, and **mouse control** for an immersive experience.
 
-This project was made in collaboration with [@corentin-ltc](github.com/corentin-ltc)
+This project was made in collaboration with [@corentin-ltc](https://github.com/corentin-ltc/)
 
 ## Features
 
