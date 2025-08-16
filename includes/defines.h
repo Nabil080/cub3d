@@ -12,7 +12,7 @@
 /* changeable */
 #define SCREEN_WIDTH	   1980
 #define SCREEN_HEIGHT	   1080
-#define MAX_FPS			   9999
+#define MAX_FPS			   120
 #define FOV				   60
 
 /* projection plane correction */
@@ -32,7 +32,7 @@
 #define RAY_RATE		   10
 
 /* settings */
-#define DEBUG			   1
+#define DEBUG			   0
 #define SHOW_MAP		   1
 #define GRID			   1
 #define LIGHT			   1
