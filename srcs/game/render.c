@@ -1,4 +1,5 @@
 #include "cub3d.h"
+#include "defines.h"
 
 static int get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 {
@@ -47,7 +48,7 @@ static void render_wall(t_data *data, t_ray ray, int i)
 	int j;
 	int z;
 
-	wall_height = 1 / ray.distance * PROJECTION_PLANE;
+	wall_height = 1 / ray.distance * PROJ_PLANE_Y;
 	ceiling_size = (data->mlx.window_height >> 1) - (wall_height >> 1);
 	ceiling_size -= (data->player.z_tilt * 10);
 	y = 0;

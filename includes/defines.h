@@ -6,14 +6,22 @@
 #include <stddef.h>
 #define TITLE			   "cub3d"
 #define BLOCK_SIZE		   32
-#define SETTINGS_X		   10 / 2
-#define SETTINGS_Y		   10 / 2
-/*changeable*/
+#define SETTINGS_X		   (10 / 2)
+#define SETTINGS_Y		   (10 / 2)
+
+/* changeable */
+#define SCREEN_WIDTH	   1980
+#define SCREEN_HEIGHT	   1080
 #define MAX_FPS			   9999
 #define FOV				   60
-#define PROJECTION_PLANE   255
-#define MAX_SPEED		   0.001
-#define ACCELERATION	   MAX_SPEED / 10
+
+/* projection plane correction */
+#define FOV_RAD			   ((double)FOV * (PI / 180))
+#define PROJ_PLANE_X	   ((SCREEN_WIDTH / 2.0) / tan(FOV_RAD / 2.0))
+#define PROJ_PLANE_Y	   ((SCREEN_HEIGHT / 2.0) / tan(FOV_RAD / 2.0))
+
+#define MAX_SPEED		   0.002
+#define ACCELERATION	   (MAX_SPEED / 10)
 #define SPRINT_INCREASE	   2.0
 #define ROTATION_SPEED	   0.005
 #define MOUSE_X_SPEED	   0.001
@@ -22,19 +30,20 @@
 #define RENDER_DISTANCE	   4
 #define BORDER_WIDTH	   1
 #define RAY_RATE		   10
-/*settings*/
+
+/* settings */
 #define DEBUG			   1
 #define SHOW_MAP		   1
 #define GRID			   1
 #define LIGHT			   1
 #define SHOW_RAYS		   1
 #define HIGHLIGHT_WALLS	   1
-/*adaptative*/
+
+/* adaptative */
 #define MINIMAP_BLOCK_SIZE abs(MINIMAP_SIZE / RENDER_DISTANCE)
-#define MINIMAP_CENTER	   MINIMAP_SIZE + BORDER_WIDTH
-#define MINIMAP_FULL_SIZE  (MINIMAP_SIZE + BORDER_WIDTH) * 2
-#define PLAYER_SIZE		   MINIMAP_BLOCK_SIZE / 4
-#define FOV_RAD			   (double)FOV *(PI / 180)
+#define MINIMAP_CENTER	   (MINIMAP_SIZE + BORDER_WIDTH)
+#define MINIMAP_FULL_SIZE  ((MINIMAP_SIZE + BORDER_WIDTH) * 2)
+#define PLAYER_SIZE		   (MINIMAP_BLOCK_SIZE / 4)
 /*cells*/
 #define FLOOR			   '0'
 #define WALL			   '1'

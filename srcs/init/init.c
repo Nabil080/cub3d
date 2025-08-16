@@ -1,4 +1,5 @@
 #include "cub3d.h"
+#include "defines.h"
 
 /**
  * @date 21/10/2024
@@ -54,9 +55,8 @@ static void init_mlx(t_data *data)
 	data->mlx.ptr = mlx_init();
 	if (!data->mlx.ptr)
 		exit_free(ERR_MALLOC, data);
-	mlx_get_screen_size(data->mlx.ptr, &data->mlx.window_width, &data->mlx.window_height);
-	if (DEBUG)
-		data->mlx.window_width /= 2;
+	data->mlx.window_width = SCREEN_WIDTH;
+	data->mlx.window_height = SCREEN_HEIGHT;
 	data->mlx.game.width = data->mlx.window_width;
 	data->mlx.game.height = data->mlx.window_height;
 	data->mlx.win = mlx_new_window(data->mlx.ptr, data->mlx.window_width, data->mlx.window_height, TITLE);
