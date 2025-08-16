@@ -1,16 +1,16 @@
 #include "cub3d.h"
 
 /**
-* @date 21/10/2024
-* @file parser.c
-* @brief Retrieves the value of the current line and make <elem> points to it
-* @exception Exits the program on error (invalid value or allocation)
-**/
-static void	get_element(char **elem, t_data *data)
+ * @date 21/10/2024
+ * @file parser.c
+ * @brief Retrieves the value of the current line and make <elem> points to it
+ * @exception Exits the program on error (invalid value or allocation)
+ **/
+static void get_element(char **elem, t_data *data)
 {
-	size_t	start;
-	size_t	end;
-	size_t	i;
+	size_t start;
+	size_t end;
+	size_t i;
 
 	i = 0;
 	while (ft_isalpha(data->tmp[i]))
@@ -32,9 +32,9 @@ static void	get_element(char **elem, t_data *data)
 		exit_free(ERR_MALLOC, data);
 }
 
-static bool	all_textures_parsed(t_data *data)
+static bool all_textures_parsed(t_data *data)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (i < 6)
@@ -47,14 +47,14 @@ static bool	all_textures_parsed(t_data *data)
 }
 
 /**
-* @date 21/10/2024
-* @file parser.c
-* @brief Parses fd to store its element inside data
-* @details Stores N,S,W,E textures and F,C colors
-* Puts the fd cursor after the last element
-* @exception Exits the program if an element is missing
-**/
-void	get_elements(t_data *data)
+ * @date 21/10/2024
+ * @file parser.c
+ * @brief Parses fd to store its element inside data
+ * @details Stores N,S,W,E textures and F,C colors
+ * Puts the fd cursor after the last element
+ * @exception Exits the program if an element is missing
+ **/
+void get_elements(t_data *data)
 {
 	while (all_textures_parsed(data) == false)
 	{
@@ -83,17 +83,17 @@ void	get_elements(t_data *data)
 }
 
 /**
-* @date 21/10/2024
-* @file parser.c
-* @brief Transforms the linked list given as argument into a map stored in data
-* @param largest Size of the widest line,
-* each row will be allocated that much memory
-* @note Also removes the newline char from each line
-* @exception Exits the program on allocation error
-**/
-static void	get_map_from_lines(t_list *lines, size_t largest, t_data *data)
+ * @date 21/10/2024
+ * @file parser.c
+ * @brief Transforms the linked list given as argument into a map stored in data
+ * @param largest Size of the widest line,
+ * each row will be allocated that much memory
+ * @note Also removes the newline char from each line
+ * @exception Exits the program on allocation error
+ **/
+static void get_map_from_lines(t_list *lines, size_t largest, t_data *data)
 {
-	size_t	i;
+	size_t i;
 
 	data->map_height = ft_lstsize(lines);
 	data->map = calloc(data->map_height + 1, sizeof(char *));
@@ -120,16 +120,16 @@ static void	get_map_from_lines(t_list *lines, size_t largest, t_data *data)
 }
 
 /**
-* @date 21/10/2024
-* @file parser.c
-* @brief Reads data->in_fd and parses the map inside data->map
-* @details We store the map inside a linked list to know how much to allocate
-* @exception Exits the program on map or allocation error
-**/
-void	get_map(t_data *data)
+ * @date 21/10/2024
+ * @file parser.c
+ * @brief Reads data->in_fd and parses the map inside data->map
+ * @details We store the map inside a linked list to know how much to allocate
+ * @exception Exits the program on map or allocation error
+ **/
+void get_map(t_data *data)
 {
-	t_list	*lines;
-	t_list	*new;
+	t_list *lines;
+	t_list *new;
 
 	data->tmp = skip_empty_lines(data->fd);
 	if (data->tmp == NULL)

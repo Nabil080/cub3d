@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-bool	is_wall(t_data *data, int x, int y)
+bool is_wall(t_data *data, int x, int y)
 {
 	if (x < 0 || y < 0)
 		return (true);
@@ -11,13 +11,13 @@ bool	is_wall(t_data *data, int x, int y)
 	return (false);
 }
 
-static void	safe_move(t_data *data, double x_multiplicator, double y_multiplicator)
+static void safe_move(t_data *data, double x_multiplicator, double y_multiplicator)
 {
-	t_pos	new_pos;
-	double	increment;
+	t_pos  new_pos;
+	double increment;
 
 	if (x_multiplicator == 0 && y_multiplicator == 0)
-		return ;
+		return;
 	increment = data->player.velocity * data->mlx.delta_time;
 	if (data->controls.sprint)
 		increment *= SPRINT_INCREASE;
@@ -27,7 +27,7 @@ static void	safe_move(t_data *data, double x_multiplicator, double y_multiplicat
 		data->player.pos = new_pos;
 }
 
-void	move_player(t_data *data)
+void move_player(t_data *data)
 {
 	if (data->controls.l_r == 0 && data->controls.u_d == 0 && data->player.velocity > 0)
 		data->player.velocity -= ACCELERATION;
@@ -39,7 +39,7 @@ void	move_player(t_data *data)
 	safe_move(data, 0, -(data->controls.u_d) * sin(data->player.angle));
 }
 
-void	rotate_player(t_data *data)
+void rotate_player(t_data *data)
 {
 	if (data->controls.left == true)
 		data->player.angle -= ROTATION_SPEED * data->mlx.delta_time;

@@ -1,9 +1,11 @@
-static int	get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
+#include "cub3d.h"
+
+static int get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 {
-	t_img texture;
-	double step;
+	t_img	 texture;
+	double	 step;
 	t_vector pixel;
-	int color;
+	int		 color;
 
 	if (ray.hit == 'W')
 		texture = data->img[T_WEST];
@@ -24,8 +26,7 @@ static int	get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 	return (color);
 }
 
-
-static int	get_direction_color(char direction)
+static int get_direction_color(char direction)
 {
 	if (direction == 'W')
 		return (YELLOW);
@@ -38,12 +39,13 @@ static int	get_direction_color(char direction)
 	return (BLACK);
 }
 
-static void	render_wall(t_data *data, t_ray ray, int i)
+static void render_wall(t_data *data, t_ray ray, int i)
 {
 	int wall_height;
 	int ceiling_size;
 	int y;
 	int j;
+	int z;
 
 	wall_height = 1 / ray.distance * PROJECTION_PLANE;
 	ceiling_size = (data->mlx.window_height >> 1) - (wall_height >> 1);
@@ -51,23 +53,25 @@ static void	render_wall(t_data *data, t_ray ray, int i)
 	y = 0;
 	while (y <= data->mlx.window_height && y <= ceiling_size)
 		put_game_pixel(vector(i, y++), data->conv_ceiling, data);
-	j = 0;
-	while (y + j <= data->mlx.window_height && y + j <= ceiling_size + wall_height)
+	z = 0;
+	if (ceiling_size < 0)
+		z = -ceiling_size;
+	j = -1;
+	while (y + ++j <= data->mlx.window_height && y + j <= ceiling_size + wall_height)
 	{
-		put_game_pixel(vector(i, y + j), get_wall_pixel(data, ray, j, wall_height), data);
-		j++;
+		put_game_pixel(vector(i, y + j), get_wall_pixel(data, ray, j + z, wall_height), data);
 	}
 	y += j;
 	while (y <= data->mlx.window_height)
 		put_game_pixel(vector(i, y++), data->conv_floor, data);
 }
 
-void	draw_game(t_data *data)
+void draw_game(t_data *data)
 {
-	double	angle;
-	double	step;
-	t_ray	ray;
-	int		i;
+	double angle;
+	double step;
+	t_ray  ray;
+	int	   i;
 
 	angle = data->player.angle - FOV_RAD / 2;
 	step = FOV_RAD / data->mlx.window_width;
@@ -76,7 +80,10 @@ void	draw_game(t_data *data)
 	{
 		ray = cast_ray(data, data->player.pos, nor_angle(angle));
 		if (SHOW_MAP && HIGHLIGHT_WALLS)
-			put_cube(pos(ray.end.x * MINIMAP_BLOCK_SIZE, ray.end.y * MINIMAP_BLOCK_SIZE), 1, get_direction_color(ray.hit), data);
+			put_cube(pos(ray.end.x * MINIMAP_BLOCK_SIZE, ray.end.y * MINIMAP_BLOCK_SIZE),
+					 1,
+					 get_direction_color(ray.hit),
+					 data);
 		if (SHOW_MAP && SHOW_RAYS)
 			put_ray(ray, WHITE, data);
 		ray.distance *= cos(data->player.angle - ray.angle);

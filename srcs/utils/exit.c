@@ -1,9 +1,9 @@
 #include "cub3d.h"
 
 /** Error messages used with defines to get the correct index
-* @example g_error_messages[ERR_MALLOC] = "Allocation error"
-*/
-static const char	*g_error_messages[50] = {
+ * @example g_error_messages[ERR_MALLOC] = "Allocation error"
+ */
+static const char *g_error_messages[50] = {
 	"undefined",
 	"Wrong number of arguments.\nUsage: ./cub3d <map.cub>",
 	"Wrong file extension.\nUsage: ./cub3d <map.cub>",
@@ -24,13 +24,13 @@ static const char	*g_error_messages[50] = {
 };
 
 /**
-* @date 20/10/2024
-* @file exit.c
-* @brief Exits the shell with the error code and the corresponding error message
-* @param code error_code as defined in the header,
-* like ERR_MALLOC or ERR_MAP_MISSING
-**/
-void	exit_error(int code)
+ * @date 20/10/2024
+ * @file exit.c
+ * @brief Exits the shell with the error code and the corresponding error message
+ * @param code error_code as defined in the header,
+ * like ERR_MALLOC or ERR_MAP_MISSING
+ **/
+void exit_error(int code)
 {
 	if (code == 0)
 		return;
@@ -39,26 +39,26 @@ void	exit_error(int code)
 }
 
 /**
-* @date 20/10/2024
-* @file exit.c
-* @brief Frees t_data then exits the shell with the error code
-* and the corresponding error message.
-* @param code error_code as defined in the header,
-* like ERR_MALLOC or ERR_MAP_MISSING
-**/
-void	exit_free(int code, t_data *data)
+ * @date 20/10/2024
+ * @file exit.c
+ * @brief Frees t_data then exits the shell with the error code
+ * and the corresponding error message.
+ * @param code error_code as defined in the header,
+ * like ERR_MALLOC or ERR_MAP_MISSING
+ **/
+void exit_free(int code, t_data *data)
 {
 	free_data(data);
 	exit_error(code);
 }
 /**
-* @date 22/10/2024
-* @file exit.c
-* @brief destroy everything mlx related (image, window...)
-**/
-static void	free_mlx(t_mlx_data mlx, t_data *data)
+ * @date 22/10/2024
+ * @file exit.c
+ * @brief destroy everything mlx related (image, window...)
+ **/
+static void free_mlx(t_mlx_data mlx, t_data *data)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (i < 6)
@@ -75,15 +75,14 @@ static void	free_mlx(t_mlx_data mlx, t_data *data)
 	free(mlx.ptr);
 }
 
-
 /**
-* @date 20/10/2024
-* @file exit.c
-* @brief Frees the pointer which aren't pointing to NULL
-**/
-void	free_data(t_data *data)
+ * @date 20/10/2024
+ * @file exit.c
+ * @brief Frees the pointer which aren't pointing to NULL
+ **/
+void free_data(t_data *data)
 {
-	size_t	i;
+	size_t i;
 
 	i = 0;
 	while (i < 6)
@@ -103,11 +102,11 @@ void	free_data(t_data *data)
 }
 
 /**
-* @date 20/10/2024
-* @file exit.c
-* @brief Exits the program successfully
-**/
-int	exit_game(t_data *data)
+ * @date 20/10/2024
+ * @file exit.c
+ * @brief Exits the program successfully
+ **/
+int exit_game(t_data *data)
 {
 	printf("Exiting the game\n");
 	if (data)

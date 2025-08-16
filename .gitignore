@@ -4,4 +4,5 @@ objs
 fdf
 libft
 minilibx-linux
-old
+.cache
+compile_commands.json

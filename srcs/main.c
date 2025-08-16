@@ -1,8 +1,8 @@
 #include "cub3d.h"
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	t_data	data;
+	t_data data;
 
 	check_args(argc, argv);
 	init_data(&data, argv[1]);
