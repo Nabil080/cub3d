@@ -1,29 +1,32 @@
 #include "cub3d.h"
-#include "defines.h"
 
 static int get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 {
 	t_img	 texture;
-	double	 step;
 	t_vector pixel;
+	double	 tex_pos;
 	int		 color;
 
+	// pick texture
 	if (ray.hit == 'W')
 		texture = data->img[T_WEST];
 	else if (ray.hit == 'E')
 		texture = data->img[T_EAST];
 	else if (ray.hit == 'S')
 		texture = data->img[T_SOUTH];
-	else if (ray.hit == 'N')
-		texture = data->img[T_NORTH];
-	if (ray.end.x - floor(ray.end.x) > ray.end.y - floor(ray.end.y))
-		step = ray.end.x - floor(ray.end.x);
 	else
-		step = ray.end.y - floor(ray.end.y);
-	step *= 100;
-	pixel.x = step * texture.width / 100;
-	pixel.y = (j * texture.height) / wall_height;
-	color = texture.addr[pixel.y * texture.line_length + (pixel.x * (texture.bits_per_pixel / 8))];
+		texture = data->img[T_NORTH];
+
+	// X coordinate: depends on which side was hit
+	if (ray.hit == 'N' || ray.hit == 'S')
+		tex_pos = ray.end.x - floor(ray.end.x);
+	else
+		tex_pos = ray.end.y - floor(ray.end.y);
+
+	pixel.x = (int)(tex_pos * texture.width);
+	pixel.y = (int)((j * texture.height) / wall_height);
+
+	color = *(unsigned int *)(texture.addr + pixel.y * texture.line_length + pixel.x * (texture.bits_per_pixel / 8));
 	return (color);
 }
 
@@ -48,7 +51,7 @@ static void render_wall(t_data *data, t_ray ray, int i)
 	int j;
 	int z;
 
-	wall_height = 1 / ray.distance * PROJ_PLANE_Y;
+	wall_height = (PROJ_PLANE_Y / ray.distance);
 	ceiling_size = (data->mlx.window_height >> 1) - (wall_height >> 1);
 	ceiling_size -= (data->player.z_tilt * 10);
 	y = 0;
