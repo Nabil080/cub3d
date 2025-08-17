@@ -1,7 +1,6 @@
 #include "cub3d.h"
 #include "defines.h"
 
-/* changeable */
 #define SCREEN_WIDTH	1980
 #define SCREEN_HEIGHT	1080
 #define MAX_FPS			120
@@ -18,13 +17,17 @@
 #define BORDER_WIDTH	1
 #define RAY_RATE		10
 
-/* settings */
 #define SHOW_INPUTS		1
 #define SHOW_MAP		1
 #define GRID			1
 #define LIGHT			1
 #define SHOW_RAYS		1
 #define HIGHLIGHT_WALLS 1
+
+#define ENTER			65293
+#define ENTER_PAD		65421
+#define PLUS			65451
+#define MINUS			65453
 
 static void update_minimap_settings(t_settings *settings)
 {
@@ -36,10 +39,13 @@ static void update_minimap_settings(t_settings *settings)
 	printf("\
         settings->minimap_block_size = %d\n\
         settings->minimap_full_size = %d\n\
+        settings->minimap_center = (%d,%d)\n\
         settings->minimap_player_size = %d\n\
 		   ",
 		   settings->minimap_block_size,
 		   settings->minimap_full_size,
+		   settings->minimap_center.x,
+		   settings->minimap_center.y,
 		   settings->minimap_player_size);
 }
 
@@ -91,7 +97,6 @@ static void show_input(t_data *data, char *str)
 
 void show_inputs(t_data *data)
 {
-	printf("INPUT\n");
 	if (data->settings.show_inputs == false)
 		show_input(data, "---------- Inputs | Press Enter to show ----------");
 	else
@@ -104,4 +109,41 @@ void show_inputs(t_data *data)
 		show_input(data, "Toggle minimap wall highlights : H");
 	}
 	show_input(data, NULL);
+}
+
+void settings_hooks(int keycode, t_data *data)
+{
+	printf("keycode: %d\n", keycode);
+	if (keycode == XK_m)
+		data->settings.show_map = !data->settings.show_map;
+	if (keycode == XK_g)
+		data->settings.show_grid = !data->settings.show_grid;
+	if (keycode == XK_l)
+		data->settings.light = !data->settings.light;
+	if (keycode == XK_h)
+		data->settings.highlight_walls = !data->settings.highlight_walls;
+	if (keycode == XK_r)
+		data->settings.show_rays = !data->settings.show_rays;
+	if (keycode == ENTER || keycode == ENTER_PAD)
+		data->settings.show_inputs = !data->settings.show_inputs;
+	if (keycode == PLUS && data->settings.fov <= 90)
+	{
+		data->settings.fov += 1;
+		update_fov_settings(&data->settings);
+	}
+	if (keycode == MINUS && data->settings.fov >= 10)
+	{
+		data->settings.fov -= 1;
+		update_fov_settings(&data->settings);
+	}
+	if (keycode == XK_Up && data->settings.minimap_full_size < data->settings.screen_height)
+	{
+		data->settings.minimap_size += 10;
+		update_minimap_settings(&data->settings);
+	}
+	if (keycode == XK_Down && data->settings.minimap_full_size > 124)
+	{
+		data->settings.minimap_size -= 10;
+		update_minimap_settings(&data->settings);
+	}
 }

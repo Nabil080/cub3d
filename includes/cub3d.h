@@ -58,5 +58,6 @@ t_ray	  cast_ray(t_data *data, t_pos start, double angle);
 /*game/settings*/
 void	  init_settings(t_data *data);
 void	  show_inputs(t_data *data);
+void	  settings_hooks(int keycode, t_data *data);
 
 #endif
