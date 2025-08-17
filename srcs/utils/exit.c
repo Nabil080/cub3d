@@ -69,8 +69,6 @@ static void free_mlx(t_mlx_data mlx, t_data *data)
 	}
 	if (mlx.win)
 		mlx_destroy_window(mlx.ptr, mlx.win);
-	if (mlx.minimap.img)
-		mlx_destroy_image(mlx.ptr, mlx.minimap.img);
 	mlx_destroy_display(mlx.ptr);
 	free(mlx.ptr);
 }

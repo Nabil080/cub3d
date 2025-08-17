@@ -27,8 +27,8 @@ GAME =	loop.c \
 		draw.c \
 		minimap.c \
 		render.c \
-		settings.c \
 		movement.c \
+		settings.c \
 		raycasting.c
 
 UTILS =	utils.c \

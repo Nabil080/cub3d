@@ -54,24 +54,15 @@ int game_loop(t_data *data)
 {
 	data->mlx.delta_time = timenow() - data->mlx.last_frame;
 	data->mlx.last_frame = timenow();
-	if (data->controls.settings)
-	{
-		new_img(data->mlx, &data->mlx.settings);
-		fill_settings(data);
-		put_img(data->mlx, &data->mlx.settings, 50, 50);
-	}
-	else
-	{
-		new_img(data->mlx, &data->mlx.game);
-		process_input(data);
-		rotate_player(data);
-		move_player(data);
-		if (SHOW_MAP)
-			draw_minimap(data);
-		draw_game(data);
-		put_img(data->mlx, &data->mlx.game, 0, 0);
-	}
-	sleep_based_on_max_fps(data, MAX_FPS);
+	new_img(data->mlx, &data->mlx.game);
+	process_input(data);
+	rotate_player(data);
+	move_player(data);
+	if (data->settings.show_map)
+		draw_minimap(data);
+	draw_game(data);
+	put_img(data->mlx, &data->mlx.game, 0, 0);
+	sleep_based_on_max_fps(data, data->settings.max_fps);
 	show_fps(data);
 	return (0);
 }

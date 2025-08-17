@@ -17,19 +17,21 @@ void put_pixel(t_vector pixel, t_img img, int color)
 
 void put_minimap_pixel(t_vector pixel, int color, t_data *data)
 {
-	pixel.x = pixel.x - (data->player.pos.x * MINIMAP_BLOCK_SIZE) + (MINIMAP_SIZE);
-	pixel.y = pixel.y - (data->player.pos.y * MINIMAP_BLOCK_SIZE) + (MINIMAP_SIZE);
-	if (get_distance(pos(pixel.x, pixel.y), pos(MINIMAP_CENTER, MINIMAP_CENTER)) > MINIMAP_BLOCK_SIZE * RENDER_DISTANCE)
+	pixel.x = pixel.x - (data->player.pos.x * data->settings.minimap_block_size) + (data->settings.minimap_size);
+	pixel.y = pixel.y - (data->player.pos.y * data->settings.minimap_block_size) + (data->settings.minimap_size);
+	if (get_distance(pos(pixel.x, pixel.y), pos(data->settings.minimap_center, data->settings.minimap_center)) >
+		data->settings.minimap_block_size * data->settings.minimap_render_distance)
 		return;
 	put_pixel(pixel, data->mlx.game, color);
 }
 
 void put_game_pixel(t_vector pixel, int color, t_data *data)
 {
-	if (SHOW_MAP == false)
+	if (data->settings.show_map == false)
 		put_pixel(pixel, data->mlx.game, color);
-	else if (get_distance(pos(pixel.x, pixel.y), pos(MINIMAP_CENTER, MINIMAP_CENTER)) >
-			 MINIMAP_BLOCK_SIZE * RENDER_DISTANCE + BORDER_WIDTH)
+	else if (get_distance(pos(pixel.x, pixel.y), pos(data->settings.minimap_center, data->settings.minimap_center)) >
+			 data->settings.minimap_block_size * data->settings.minimap_render_distance +
+				 data->settings.minimap_border_width)
 		put_pixel(pixel, data->mlx.game, color);
 }
 
@@ -56,12 +58,12 @@ void put_ray(t_ray ray, int color, t_data *data)
 	int i;
 
 	i = 0;
-	while (i < ray.distance * MINIMAP_BLOCK_SIZE && i < MINIMAP_SIZE)
+	while (i < ray.distance * data->settings.minimap_block_size && i < data->settings.minimap_size)
 	{
 		ray.dir = pos(cos(ray.angle) * i, sin(ray.angle) * i);
-		if (i && RAY_RATE != 0 && i % RAY_RATE == 0)
-			put_minimap_pixel(vector(((ray.start.x * MINIMAP_BLOCK_SIZE) + ray.dir.x),
-									 ((ray.start.y * MINIMAP_BLOCK_SIZE) + ray.dir.y)),
+		if (i && data->settings.minimap_ray_rate != 0 && i % data->settings.minimap_ray_rate == 0)
+			put_minimap_pixel(vector(((ray.start.x * data->settings.minimap_block_size) + ray.dir.x),
+									 ((ray.start.y * data->settings.minimap_block_size) + ray.dir.y)),
 							  color,
 							  data);
 		i++;

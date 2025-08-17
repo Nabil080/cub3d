@@ -26,7 +26,7 @@ static int get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 
 	color = *(unsigned int *)(texture.addr + pixel.y * texture.line_length + pixel.x * (texture.bits_per_pixel / 8));
 
-	// Darken by 50% for South and East walls to simulate shadow
+	// darken by 50% for South and East walls to simulate shadow
 	if (ray.hit == 'S' || ray.hit == 'E')
 	{
 		unsigned char r = (color >> 16) & 0xFF;
@@ -34,7 +34,7 @@ static int get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 		unsigned char b = color & 0xFF;
 		unsigned char a = (color >> 24) & 0xFF;
 
-		// Reduce brightness by 50%
+		// reduce brightness by 50%
 		r = (unsigned char)(r * 0.5);
 		g = (unsigned char)(g * 0.5);
 		b = (unsigned char)(b * 0.5);
@@ -66,22 +66,20 @@ static void render_wall(t_data *data, t_ray ray, int i)
 	int j;
 	int z;
 
-	wall_height = (PROJ_PLANE_Y / ray.distance);
-	ceiling_size = (data->mlx.window_height >> 1) - (wall_height >> 1);
+	wall_height = (data->settings.proj_plane_y / ray.distance);
+	ceiling_size = (data->settings.screen_height >> 1) - (wall_height >> 1);
 	ceiling_size -= (data->player.z_tilt * 10);
 	y = 0;
-	while (y <= data->mlx.window_height && y <= ceiling_size)
+	while (y <= data->settings.screen_height && y <= ceiling_size)
 		put_game_pixel(vector(i, y++), data->conv_ceiling, data);
 	z = 0;
 	if (ceiling_size < 0)
 		z = -ceiling_size;
 	j = -1;
-	while (y + ++j <= data->mlx.window_height && y + j <= ceiling_size + wall_height)
-	{
+	while (y + ++j <= data->settings.screen_height && y + j <= ceiling_size + wall_height)
 		put_game_pixel(vector(i, y + j), get_wall_pixel(data, ray, j + z, wall_height), data);
-	}
 	y += j;
-	while (y <= data->mlx.window_height)
+	while (y <= data->settings.screen_height)
 		put_game_pixel(vector(i, y++), data->conv_floor, data);
 }
 
@@ -92,21 +90,21 @@ void draw_game(t_data *data)
 	t_ray  ray;
 	int	   i;
 
-	angle = data->player.angle - FOV_RAD / 2;
-	step = FOV_RAD / data->mlx.window_width;
+	angle = data->player.angle - data->settings.fov_rad / 2;
+	step = data->settings.fov_rad / data->settings.screen_width;
 	i = 0;
-	while (i <= data->mlx.window_width)
+	while (i <= data->settings.screen_width)
 	{
 		ray = cast_ray(data, data->player.pos, nor_angle(angle));
-		if (SHOW_MAP && HIGHLIGHT_WALLS)
-			put_cube(pos(ray.end.x * MINIMAP_BLOCK_SIZE, ray.end.y * MINIMAP_BLOCK_SIZE),
+		if (data->settings.show_map && data->settings.highlight_walls)
+			put_cube(pos(ray.end.x * data->settings.minimap_block_size, ray.end.y * data->settings.minimap_block_size),
 					 1,
 					 get_direction_color(ray.hit),
 					 data);
-		if (SHOW_MAP && SHOW_RAYS)
+		if (data->settings.show_map && data->settings.show_rays)
 			put_ray(ray, WHITE, data);
 		ray.distance *= cos(data->player.angle - ray.angle);
-		if (LIGHT)
+		if (data->settings.light)
 			render_wall(data, ray, i);
 		angle += step;
 		i++;

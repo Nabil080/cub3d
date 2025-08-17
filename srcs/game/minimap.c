@@ -6,13 +6,14 @@ static void put_minimap_border(t_data *data)
 	double distance;
 
 	i.y = 0;
-	while (i.y < (MINIMAP_CENTER) * 2)
+	while (i.y < (data->settings.minimap_center) * 2)
 	{
 		i.x = 0;
-		while (i.x < (MINIMAP_CENTER) * 2)
+		while (i.x < (data->settings.minimap_center) * 2)
 		{
-			distance = get_distance(i, pos(MINIMAP_CENTER, MINIMAP_CENTER));
-			if (distance > MINIMAP_SIZE && distance < BORDER_WIDTH + MINIMAP_SIZE)
+			distance = get_distance(i, pos(data->settings.minimap_center, data->settings.minimap_center));
+			if (distance > data->settings.minimap_size &&
+				distance < data->settings.minimap_border_width + data->settings.minimap_size)
 				put_pixel(vector((int)i.x, (int)i.y), data->mlx.game, WHITE);
 			i.x++;
 		}
@@ -25,14 +26,14 @@ static void put_minimap_block(t_data *data, t_vector cell)
 	t_vector pixel;
 	t_vector i;
 
-	i.y = GRID;
-	while (i.y < MINIMAP_BLOCK_SIZE)
+	i.y = data->settings.show_grid;
+	while (i.y < data->settings.minimap_block_size)
 	{
-		i.x = GRID;
-		while (i.x < MINIMAP_BLOCK_SIZE)
+		i.x = data->settings.show_grid;
+		while (i.x < data->settings.minimap_block_size)
 		{
-			pixel.x = (cell.x * MINIMAP_BLOCK_SIZE) + i.x;
-			pixel.y = (cell.y * MINIMAP_BLOCK_SIZE) + i.y;
+			pixel.x = (cell.x * data->settings.minimap_block_size) + i.x;
+			pixel.y = (cell.y * data->settings.minimap_block_size) + i.y;
 			if (data->map[cell.y][cell.x] == WALL)
 				put_minimap_pixel(pixel, WALL_COLOR, data);
 			else if (data->map[cell.y][cell.x] == FLOOR)
@@ -48,14 +49,15 @@ void draw_minimap(t_data *data)
 	t_vector cell;
 
 	cell.y = 0;
-	if (data->player.pos.y > RENDER_DISTANCE)
-		cell.y = (int)data->player.pos.y - RENDER_DISTANCE;
-	while (LIGHT && cell.y < data->player.pos.y + RENDER_DISTANCE && data->map[cell.y])
+	if (data->player.pos.y > data->settings.minimap_render_distance)
+		cell.y = (int)data->player.pos.y - data->settings.minimap_render_distance;
+	while (data->settings.light && cell.y < data->player.pos.y + data->settings.minimap_render_distance &&
+		   data->map[cell.y])
 	{
 		cell.x = 0;
-		if (data->player.pos.x > RENDER_DISTANCE)
-			cell.x = (int)data->player.pos.x - RENDER_DISTANCE;
-		while (cell.x < data->player.pos.x + RENDER_DISTANCE && data->map[cell.y][cell.x])
+		if (data->player.pos.x > data->settings.minimap_render_distance)
+			cell.x = (int)data->player.pos.x - data->settings.minimap_render_distance;
+		while (cell.x < data->player.pos.x + data->settings.minimap_render_distance && data->map[cell.y][cell.x])
 		{
 			put_minimap_block(data, cell);
 			cell.x++;
@@ -63,14 +65,16 @@ void draw_minimap(t_data *data)
 		cell.y++;
 	}
 	put_minimap_border(data);
-	if (LIGHT)
-		put_cube(pos(data->player.pos.x * MINIMAP_BLOCK_SIZE, data->player.pos.y * MINIMAP_BLOCK_SIZE),
-				 PLAYER_SIZE,
+	if (data->settings.light)
+		put_cube(pos(data->player.pos.x * data->settings.minimap_block_size,
+					 data->player.pos.y * data->settings.minimap_block_size),
+				 data->settings.minimap_player_size,
 				 PLAYER_COLOR,
 				 data);
 	else
-		put_cube(pos(data->player.pos.x * MINIMAP_BLOCK_SIZE, data->player.pos.y * MINIMAP_BLOCK_SIZE),
-				 PLAYER_SIZE,
+		put_cube(pos(data->player.pos.x * data->settings.minimap_block_size,
+					 data->player.pos.y * data->settings.minimap_block_size),
+				 data->settings.minimap_player_size,
 				 GRAY,
 				 data);
 }
