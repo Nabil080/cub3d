@@ -27,6 +27,7 @@
 #define RED				  0xFF0000
 #define CYAN			  0x00FFFF
 #define YELLOW			  0xFFFF00
+#define ORANGE			  0xFFFFA500
 #define WHITE			  0xFFFFFF
 #define BLACK			  0x000000
 #define GRAY			  0x808080
@@ -149,6 +150,7 @@ typedef struct s_settings
 		bool   light;
 		bool   show_rays;
 		bool   highlight_walls;
+		bool   show_inputs;
 
 		// Adaptative settings
 		double fov_rad;				// Changes with fov

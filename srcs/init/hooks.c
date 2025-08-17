@@ -1,5 +1,8 @@
 #include "cub3d.h"
 
+#define ENTER	  65293
+#define ENTER_PAD 65421
+
 void process_input(t_data *data)
 {
 	data->controls.l_r = 0;
@@ -41,6 +44,18 @@ static int press_input(int keycode, t_data *data)
 		data->controls.d = true;
 	if (keycode == XK_Shift_L)
 		data->controls.sprint = true;
+	if (keycode == XK_m)
+		data->settings.show_map = !data->settings.show_map;
+	if (keycode == XK_g)
+		data->settings.show_grid = !data->settings.show_grid;
+	if (keycode == XK_l)
+		data->settings.light = !data->settings.light;
+	if (keycode == XK_h)
+		data->settings.highlight_walls = !data->settings.highlight_walls;
+	if (keycode == XK_r)
+		data->settings.show_rays = !data->settings.show_rays;
+	if (keycode == ENTER || keycode == ENTER_PAD)
+		data->settings.show_inputs = !data->settings.show_inputs;
 	return (0);
 }
 

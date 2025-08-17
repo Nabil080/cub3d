@@ -62,6 +62,7 @@ int game_loop(t_data *data)
 		draw_minimap(data);
 	draw_game(data);
 	put_img(data->mlx, &data->mlx.game, 0, 0);
+	show_inputs(data);
 	sleep_based_on_max_fps(data, data->settings.max_fps);
 	show_fps(data);
 	return (0);
