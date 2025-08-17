@@ -14,7 +14,7 @@
 #define MOUSE_Y_SPEED	0.1
 #define MINIMAP_SIZE	128
 #define RENDER_DISTANCE 4
-#define BORDER_WIDTH	1
+#define BORDER_WIDTH	2
 #define RAY_RATE		10
 
 #define SHOW_INPUTS		1
@@ -108,6 +108,9 @@ void show_inputs(t_data *data)
 		show_input(data, "Toggle minimap grid : G");
 		show_input(data, "Toggle minimap rays : R");
 		show_input(data, "Toggle minimap wall highlights : H");
+		show_input(data, "----");
+		show_input(data, "Increase/Decrease FOV : +/- or mouse wheel");
+		show_input(data, "Increase/Decrease Map size : Up/Down");
 	}
 	show_input(data, NULL);
 }
