@@ -59,5 +59,7 @@ t_ray	  cast_ray(t_data *data, t_pos start, double angle);
 void	  init_settings(t_data *data);
 void	  show_inputs(t_data *data);
 void	  settings_hooks(int keycode, t_data *data);
+void	  update_minimap_settings(t_settings *settings);
+void	  update_fov_settings(t_settings *settings);
 
 #endif

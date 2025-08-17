@@ -84,6 +84,16 @@ static int mouse_buttons(int button, int x, int y, t_data *data)
 {
 	if (button == 3)
 		mlx_mouse_show(data->mlx.ptr, data->mlx.win);
+	if (button == 5 && data->settings.fov <= 90)
+	{
+		data->settings.fov += 1;
+		update_fov_settings(&data->settings);
+	}
+	if (button == 4 && data->settings.fov >= 10)
+	{
+		data->settings.fov -= 1;
+		update_fov_settings(&data->settings);
+	}
 	return (0);
 	printf("Mouse in Win1, button %d at %dx%d.\n", button, x, y);
 }

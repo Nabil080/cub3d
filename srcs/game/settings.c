@@ -24,12 +24,13 @@
 #define SHOW_RAYS		1
 #define HIGHLIGHT_WALLS 1
 
+#define INPUT_COLOR		CYAN
 #define ENTER			65293
 #define ENTER_PAD		65421
 #define PLUS			65451
 #define MINUS			65453
 
-static void update_minimap_settings(t_settings *settings)
+void update_minimap_settings(t_settings *settings)
 {
 	settings->minimap_block_size = (settings->minimap_size / settings->minimap_render_distance);
 	settings->minimap_center.y = settings->minimap_size + settings->minimap_border_width;
@@ -49,7 +50,7 @@ static void update_minimap_settings(t_settings *settings)
 		   settings->minimap_player_size);
 }
 
-static void update_fov_settings(t_settings *settings)
+void update_fov_settings(t_settings *settings)
 {
 	settings->fov_rad = (double)settings->fov * (PI / 180);
 	settings->proj_plane_x = (settings->screen_width / 2.0) / tan(settings->fov_rad / 2.0);
@@ -91,7 +92,7 @@ static void show_input(t_data *data, char *str)
 		y = 20;
 		return;
 	}
-	mlx_string_put(data->mlx.ptr, data->mlx.win, x, y, ORANGE, str);
+	mlx_string_put(data->mlx.ptr, data->mlx.win, x, y, INPUT_COLOR, str);
 	y += 20;
 }
 
@@ -113,7 +114,6 @@ void show_inputs(t_data *data)
 
 void settings_hooks(int keycode, t_data *data)
 {
-	printf("keycode: %d\n", keycode);
 	if (keycode == XK_m)
 		data->settings.show_map = !data->settings.show_map;
 	if (keycode == XK_g)
