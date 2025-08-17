@@ -35,9 +35,9 @@ static int get_direction_color(char direction)
 	if (direction == 'W')
 		return (YELLOW);
 	else if (direction == 'E')
-		return (DARK_BLUE);
+		return (RED);
 	else if (direction == 'S')
-		return (WHITE);
+		return (CYAN);
 	else if (direction == 'N')
 		return (PURPLE);
 	return (BLACK);
