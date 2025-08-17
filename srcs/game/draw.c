@@ -17,9 +17,9 @@ void put_pixel(t_vector pixel, t_img img, int color)
 
 void put_minimap_pixel(t_vector pixel, int color, t_data *data)
 {
-	pixel.x = pixel.x - (data->player.pos.x * data->settings.minimap_block_size) + (data->settings.minimap_size);
-	pixel.y = pixel.y - (data->player.pos.y * data->settings.minimap_block_size) + (data->settings.minimap_size);
-	if (get_distance(pos(pixel.x, pixel.y), pos(data->settings.minimap_center, data->settings.minimap_center)) >
+	pixel.x = pixel.x - (data->player.pos.x * data->settings.minimap_block_size) + (data->settings.minimap_center.x);
+	pixel.y = pixel.y - (data->player.pos.y * data->settings.minimap_block_size) + (data->settings.minimap_center.y);
+	if (get_distance(pos(pixel.x, pixel.y), pos(data->settings.minimap_center.x, data->settings.minimap_center.y)) >
 		data->settings.minimap_block_size * data->settings.minimap_render_distance)
 		return;
 	put_pixel(pixel, data->mlx.game, color);
@@ -29,7 +29,8 @@ void put_game_pixel(t_vector pixel, int color, t_data *data)
 {
 	if (data->settings.show_map == false)
 		put_pixel(pixel, data->mlx.game, color);
-	else if (get_distance(pos(pixel.x, pixel.y), pos(data->settings.minimap_center, data->settings.minimap_center)) >
+	else if (get_distance(pos(pixel.x, pixel.y),
+						  pos(data->settings.minimap_center.x, data->settings.minimap_center.y)) >
 			 data->settings.minimap_block_size * data->settings.minimap_render_distance +
 				 data->settings.minimap_border_width)
 		put_pixel(pixel, data->mlx.game, color);

@@ -29,17 +29,16 @@
 static void update_minimap_settings(t_settings *settings)
 {
 	settings->minimap_block_size = (settings->minimap_size / settings->minimap_render_distance);
-	settings->minimap_center = (settings->minimap_size + settings->minimap_border_width);
+	settings->minimap_center.y = settings->minimap_size + settings->minimap_border_width;
+	settings->minimap_center.x = settings->screen_width - (settings->minimap_size + settings->minimap_border_width);
 	settings->minimap_full_size = (settings->minimap_size + settings->minimap_border_width) * 2;
 	settings->minimap_player_size = settings->minimap_block_size / 4;
 	printf("\
         settings->minimap_block_size = %d\n\
-        settings->minimap_center = %d\n\
         settings->minimap_full_size = %d\n\
         settings->minimap_player_size = %d\n\
 		   ",
 		   settings->minimap_block_size,
-		   settings->minimap_center,
 		   settings->minimap_full_size,
 		   settings->minimap_player_size);
 }
@@ -78,7 +77,7 @@ void init_settings(t_data *data)
 
 static void show_input(t_data *data, char *str)
 {
-	static const int x = 1000;
+	static const int x = 10;
 	static int		 y = 20;
 
 	if (!str)

@@ -125,42 +125,42 @@ typedef struct s_mlx_data
 typedef struct s_settings
 {
 		// const
-		int	   screen_width;
-		int	   screen_height;
+		int		 screen_width;
+		int		 screen_height;
 
 		// Changeable settings
-		int	   max_fps; // 0 - 999
-		int	   fov;		// 20-80
+		int		 max_fps; // 0 - 999
+		int		 fov;	  // 20-80
 
 		// Might change so values make sense
-		double max_speed;				// 0.002
-		double acceleration;
-		double rotation_speed;			// 0.005
-		double mouse_speed_x;			// 0.001
-		double mouse_speed_y;			// 0.1
-		float  sprint_increase;			// 1.5
+		double	 max_speed;				  // 0.002
+		double	 acceleration;
+		double	 rotation_speed;		  // 0.005
+		double	 mouse_speed_x;			  // 0.001
+		double	 mouse_speed_y;			  // 0.1
+		float	 sprint_increase;		  // 1.5
 
-		int	   minimap_size;			// 128 px
-		int	   minimap_render_distance; // 4 blocks
-		int	   minimap_border_width;	// 1 px
-		int	   minimap_ray_rate;		// every 10px
+		int		 minimap_size;			  // 128 px
+		int		 minimap_render_distance; // 4 blocks
+		int		 minimap_border_width;	  // 1 px
+		int		 minimap_ray_rate;		  // every 10px
 
-		bool   show_map;
-		bool   show_grid;
-		bool   light;
-		bool   show_rays;
-		bool   highlight_walls;
-		bool   show_inputs;
+		bool	 show_map;
+		bool	 show_grid;
+		bool	 light;
+		bool	 show_rays;
+		bool	 highlight_walls;
+		bool	 show_inputs;
 
 		// Adaptative settings
-		double fov_rad;				// Changes with fov
-		double proj_plane_x;		// Changes with fov
-		double proj_plane_y;		// Changes with fov
+		double	 fov_rad;			  // Changes with fov
+		double	 proj_plane_x;		  // Changes with fov
+		double	 proj_plane_y;		  // Changes with fov
 
-		int	   minimap_block_size;	// changes with minimap size/render_distance
-		int	   minimap_center;		// changes with minimap size/border_width
-		int	   minimap_full_size;	// changes with minimap size/border_width
-		int	   minimap_player_size; // changes with minimap_block_size;
+		t_vector minimap_center;	  // changes with minimap size/border_width
+		int		 minimap_block_size;  // changes with minimap size/render_distance
+		int		 minimap_full_size;	  // changes with minimap size/border_width
+		int		 minimap_player_size; // changes with minimap_block_size;
 } t_settings;
 
 typedef struct s_data

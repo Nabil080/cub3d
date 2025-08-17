@@ -29,7 +29,7 @@ static void show_fps(t_data *data)
 		fps = 1000 / (timenow() - data->mlx.last_frame);
 	}
 	fps_string = ft_itoa(fps);
-	mlx_string_put(data->mlx.ptr, data->mlx.win, 20, 20, RED, fps_string);
+	mlx_string_put(data->mlx.ptr, data->mlx.win, data->settings.screen_width - 20, 20, RED, fps_string);
 	free(fps_string);
 }
 

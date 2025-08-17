@@ -6,12 +6,12 @@ static void put_minimap_border(t_data *data)
 	double distance;
 
 	i.y = 0;
-	while (i.y < (data->settings.minimap_center) * 2)
+	while (i.y < (data->settings.minimap_center.y) * 2)
 	{
 		i.x = 0;
-		while (i.x < (data->settings.minimap_center) * 2)
+		while (i.x < (data->settings.minimap_center.x) * 2)
 		{
-			distance = get_distance(i, pos(data->settings.minimap_center, data->settings.minimap_center));
+			distance = get_distance(i, pos(data->settings.minimap_center.x, data->settings.minimap_center.y));
 			if (distance > data->settings.minimap_size &&
 				distance < data->settings.minimap_border_width + data->settings.minimap_size)
 				put_pixel(vector((int)i.x, (int)i.y), data->mlx.game, WHITE);
