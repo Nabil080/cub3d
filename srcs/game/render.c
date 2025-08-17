@@ -7,7 +7,6 @@ static int get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 	double	 tex_pos;
 	int		 color;
 
-	// pick texture
 	if (ray.hit == 'W')
 		texture = data->img[T_WEST];
 	else if (ray.hit == 'E')
@@ -17,7 +16,6 @@ static int get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 	else
 		texture = data->img[T_NORTH];
 
-	// X coordinate: depends on which side was hit
 	if (ray.hit == 'N' || ray.hit == 'S')
 		tex_pos = ray.end.x - floor(ray.end.x);
 	else
@@ -27,6 +25,23 @@ static int get_wall_pixel(t_data *data, t_ray ray, int j, int wall_height)
 	pixel.y = (int)((j * texture.height) / wall_height);
 
 	color = *(unsigned int *)(texture.addr + pixel.y * texture.line_length + pixel.x * (texture.bits_per_pixel / 8));
+
+	// Darken by 50% for South and East walls to simulate shadow
+	if (ray.hit == 'S' || ray.hit == 'E')
+	{
+		unsigned char r = (color >> 16) & 0xFF;
+		unsigned char g = (color >> 8) & 0xFF;
+		unsigned char b = color & 0xFF;
+		unsigned char a = (color >> 24) & 0xFF;
+
+		// Reduce brightness by 50%
+		r = (unsigned char)(r * 0.5);
+		g = (unsigned char)(g * 0.5);
+		b = (unsigned char)(b * 0.5);
+
+		color = (a << 24) | (r << 16) | (g << 8) | b;
+	}
+
 	return (color);
 }
 
