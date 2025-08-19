@@ -14,9 +14,9 @@
 #define MOUSE_X_SPEED	0.001
 #define MOUSE_Y_SPEED	0.1
 #define MINIMAP_SIZE	128
-#define RENDER_DISTANCE 4
+#define RENDER_DISTANCE 5
 #define BORDER_WIDTH	3
-#define RAY_RATE		1
+#define RAY_RATE		10
 
 #define SHOW_INPUTS		1
 #define SHOW_MAP		1

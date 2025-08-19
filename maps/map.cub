@@ -1,16 +1,16 @@
 
 
-NO               assets/textures/wall.xpm  
+NO               assets/textures/TECH_1C.xpm  
 
-SO assets/textures/wall.xpm
+SO assets/textures/TECH_1E.xpm
 
 
 
-C 128,128,128
-F 139,69,19
+C 100,100,100
+F 50,50,50
 
-WE assets/textures/wall.xpm 
-EA assets/textures/wall.xpm      
+WE assets/textures/TECH_2F.xpm 
+EA assets/textures/TECH_3B.xpm      
 
 
 
