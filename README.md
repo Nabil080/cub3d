@@ -4,7 +4,7 @@ Cub3d is a simple raycasting engine written in C, using the MiniLibX graphical l
 
 <img width="800" height="608" alt="demo" src="cub3d.gif" />
 
-> Note: Check out this [demo video](https://youtu.be/DQZlc5y5ujU) to see Cub3d in action.
+> Note: Check out this [demo video](https://youtu.be/TiSBKJ6pB04) to see Cub3d in action.
 
 This project integrates submodules for MiniLibX and libft, which are automatically handled via the Makefile.
 
@@ -15,11 +15,11 @@ This project integrates submodules for MiniLibX and libft, which are automatical
 - Camera control : Look around / up / down, change the FOV
 - Minimap control : Toggle, zoom, resize
 - Toggleable minimap visuals : casted rays, wall highlights, grid, ray frequency...
-
-- Additional
+- Others:
   - Lightless mode
+  - Loads any valid map (You can make your own or even load any texture you want)
+  - Handles different colors for ceiling/floor and different textures for wall depending on their orientation.
   - Error handling for invalid map files.
-  - Preset maps included in the `maps/` folder. (You can make your own or even load any texture you want)
   - Fps counter.
 
 ## Dependencies
@@ -108,6 +108,3 @@ Remove all binaries and object files:
 ```sh
 make fclean
 ```
-  <img src="path/to/screenshot3.png" alt="Light Mode" width="600">
-  <p>Light toggle mode with rays visible</p>
-</div>
