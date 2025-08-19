@@ -1,5 +1,8 @@
 #include "cub3d.h"
 
+#define SPRINT_STAMINA 1
+#define JUMP_STAMINA   10
+
 bool is_wall(t_data *data, int x, int y)
 {
 	if (x < 0 || y < 0)
@@ -19,7 +22,7 @@ static void safe_move(t_data *data, double x_multiplicator, double y_multiplicat
 	if (x_multiplicator == 0 && y_multiplicator == 0)
 		return;
 	increment = data->player.velocity * data->mlx.delta_time;
-	if (data->controls.sprint)
+	if (data->controls.sprint && (!data->settings.stamina || data->player.stamina >= SPRINT_STAMINA))
 		increment *= data->settings.sprint_increase;
 	new_pos.x = data->player.pos.x + (increment * x_multiplicator);
 	new_pos.y = data->player.pos.y + (increment * y_multiplicator);
@@ -37,6 +40,8 @@ void move_player(t_data *data)
 	safe_move(data, 0, data->controls.l_r * cos(data->player.angle));
 	safe_move(data, -(data->controls.u_d) * cos(data->player.angle), 0);
 	safe_move(data, 0, -(data->controls.u_d) * sin(data->player.angle));
+	if (data->controls.sprint && data->player.stamina >= SPRINT_STAMINA)
+		data->player.stamina -= SPRINT_STAMINA;
 }
 
 void rotate_player(t_data *data)
@@ -58,10 +63,12 @@ void jump_player(t_data *data)
 	float		delta_time = data->mlx.delta_time / 1000.0; // Convert ms to seconds
 
 	// Initiate jump
-	if (data->controls.jump && !data->player.is_jumping && !data->player.is_crouching)
+	if (data->controls.jump && !data->player.is_jumping && !data->player.is_crouching &&
+		(!data->settings.stamina || data->player.stamina >= JUMP_STAMINA))
 	{
 		data->player.is_jumping = true;
 		data->player.z_velocity = jump_impulse;
+		data->player.stamina -= JUMP_STAMINA; // Consume stamina for jump
 	}
 
 	// Handle crouching
@@ -98,6 +105,13 @@ void jump_player(t_data *data)
 		data->player.z_velocity = 0.0f;
 	}
 
+	if (data->controls.sprint == false)
+		data->player.stamina += data->settings.stamina_regen * delta_time;
+	// Clamp stamina
+	if (data->player.stamina < 0.0f)
+		data->player.stamina = 0.0f;
+	if (data->player.stamina > data->player.max_stamina || data->settings.stamina == false)
+		data->player.stamina = data->player.max_stamina;
 	// Clamp z_offset to prevent extreme values
 	if (data->player.z_offset < crouch_target)
 		data->player.z_offset = crouch_target;

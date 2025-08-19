@@ -25,6 +25,8 @@ static void set_default_values(t_data *data)
 	data->player.z_tilt = 0;
 	data->player.z_offset = 0;
 	data->player.velocity = 0;
+	data->player.max_stamina = 100;
+	data->player.stamina = 100;
 	i = 0;
 	while (i < 6)
 	{

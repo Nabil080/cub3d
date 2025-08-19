@@ -62,6 +62,7 @@ int game_loop(t_data *data)
 	if (data->settings.show_map)
 		draw_minimap(data);
 	draw_game(data);
+	draw_stamina_bar(data);
 	put_img(data->mlx, &data->mlx.game, 0, 0);
 	show_inputs(data);
 	sleep_based_on_max_fps(data, data->settings.max_fps);

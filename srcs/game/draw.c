@@ -70,3 +70,42 @@ void put_ray(t_ray ray, int color, t_data *data)
 		i++;
 	}
 }
+
+void draw_stamina_bar(t_data *data)
+{
+	if (data->settings.stamina == false)
+		return;
+	t_settings *settings = &data->settings;
+	int			bar_width = settings->screen_width / 6;
+	int			bar_height = 20;
+	int			bar_x = (settings->screen_width / 2) - (bar_width / 2);
+	int			bar_y = settings->screen_height - bar_height - 80;
+	float		stamina_ratio = data->player.stamina / data->player.max_stamina;
+	int			filled_width = (int)(bar_width * stamina_ratio);
+
+	// background
+	for (int y = bar_y; y < bar_y + bar_height && y < settings->screen_height; y++)
+	{
+		for (int x = bar_x; x < bar_x + bar_width && x < settings->screen_width; x++)
+			put_game_pixel(vector(x, y), DARK_BLUE, data);
+	}
+
+	// filled portion
+	for (int y = bar_y; y < bar_y + bar_height && y < settings->screen_height; y++)
+	{
+		for (int x = bar_x; x < bar_x + filled_width && x < settings->screen_width; x++)
+			put_game_pixel(vector(x, y), GREEN, data);
+	}
+
+	// border
+	for (int x = bar_x; x < bar_x + bar_width && x < settings->screen_width; x++)
+	{
+		put_game_pixel(vector(x, bar_y), BLACK, data);					// Top border
+		put_game_pixel(vector(x, bar_y + bar_height - 1), BLACK, data); // Bottom border
+	}
+	for (int y = bar_y; y < bar_y + bar_height && y < settings->screen_height; y++)
+	{
+		put_game_pixel(vector(bar_x, y), BLACK, data);				   // Left border
+		put_game_pixel(vector(bar_x + bar_width - 1, y), BLACK, data); // Right border
+	}
+}

@@ -8,7 +8,8 @@
 
 #define MAX_SPEED		0.002
 #define ACCELERATION	(MAX_SPEED / 10)
-#define SPRINT_INCREASE 1.5
+#define SPRINT_INCREASE 2.0
+#define STAMINA_REGEN	5
 #define ROTATION_SPEED	0.005
 #define MOUSE_X_SPEED	0.001
 #define MOUSE_Y_SPEED	0.1
@@ -23,6 +24,7 @@
 #define LIGHT			1
 #define SHOW_RAYS		1
 #define HIGHLIGHT_WALLS 1
+#define STAMINA			1
 
 #define INPUT_COLOR		CYAN
 #define ESC				65307
@@ -96,6 +98,7 @@ void init_settings(t_data *data)
 	settings->mouse_speed_x = MOUSE_X_SPEED;
 	settings->mouse_speed_y = MOUSE_Y_SPEED;
 	settings->sprint_increase = SPRINT_INCREASE;
+	settings->stamina_regen = STAMINA_REGEN;
 	settings->minimap_size = MINIMAP_SIZE;
 	settings->minimap_render_distance = RENDER_DISTANCE;
 	settings->minimap_border_width = BORDER_WIDTH;
@@ -106,6 +109,8 @@ void init_settings(t_data *data)
 	settings->light = LIGHT;
 	settings->highlight_walls = HIGHLIGHT_WALLS;
 	settings->show_inputs = SHOW_INPUTS;
+	settings->stamina = STAMINA;
+	data->player.stamina = 100;
 	update_minimap_settings(settings);
 	update_fov_settings(settings);
 }
@@ -142,6 +147,7 @@ void show_inputs(t_data *data)
 		show_input(data, "Toggle minimap grid : G");
 		show_input(data, "Toggle minimap rays : R");
 		show_input(data, "Toggle minimap wall highlights : H");
+		show_input(data, "Toggle stamina : I");
 		show_input(data, "----");
 		show_input(data, "FOV : +/- or Mouse Wheel");
 		show_input(data, "Ray rate : 1/3");
@@ -166,6 +172,8 @@ void settings_hooks(int keycode, t_data *data)
 		settings->show_rays = !settings->show_rays;
 	if (keycode == ENTER || keycode == ENTER_PAD)
 		settings->show_inputs = !settings->show_inputs;
+	if (keycode == XK_i)
+		settings->stamina = !settings->stamina;
 	if (keycode == PLUS && settings->fov <= 90)
 	{
 		settings->fov += 1;

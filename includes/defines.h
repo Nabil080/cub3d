@@ -75,7 +75,8 @@ typedef struct s_player
 		double z_tilt;
 		double velocity;
 		double z_offset;
-
+		float  stamina;
+		float  max_stamina;
 		bool   is_jumping;
 		bool   is_crouching;
 		double z_velocity;
@@ -146,6 +147,7 @@ typedef struct s_settings
 		double	 mouse_speed_x;			  // 0.001
 		double	 mouse_speed_y;			  // 0.1
 		float	 sprint_increase;		  // 1.5
+		float	 stamina_regen;			  // 5
 
 		int		 minimap_size;			  // 128 px
 		int		 minimap_render_distance; // 4 blocks
@@ -158,6 +160,7 @@ typedef struct s_settings
 		bool	 show_rays;
 		bool	 highlight_walls;
 		bool	 show_inputs;
+		bool	 stamina;
 
 		// Adaptative settings
 		double	 fov_rad;			  // Changes with fov
