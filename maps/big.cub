@@ -1,18 +1,18 @@
 
 
 
-NO              ./path_to_the_north_texture        
+NO              assets/textures/wall.xpm        
 
-SO ./path_to_the_south_texture
+SO assets/textures/wall.xpm
 
 
 
-F 220,100,0
+F 128,128,128
 
-C 225,30,0
+C 128,128,128
 
-WE ./path_to_the_west_texture 
-EA ./path_to_the_east_texture      
+WE assets/textures/wall.xpm 
+EA assets/textures/wall.xpm      
 
 
 
