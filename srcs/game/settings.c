@@ -14,7 +14,7 @@
 #define MOUSE_Y_SPEED	0.1
 #define MINIMAP_SIZE	128
 #define RENDER_DISTANCE 4
-#define BORDER_WIDTH	2
+#define BORDER_WIDTH	3
 #define RAY_RATE		1
 
 #define SHOW_INPUTS		1
@@ -39,17 +39,38 @@
 
 void update_minimap_settings(t_settings *settings)
 {
-	settings->minimap_block_size = (settings->minimap_size / settings->minimap_render_distance);
+	if (settings->minimap_render_distance < 1)
+		settings->minimap_render_distance = 1;
+	settings->minimap_block_size = settings->minimap_size / settings->minimap_render_distance;
+	// Ensure block size is at least 1 pixel to avoid rendering issues
+	if (settings->minimap_block_size < 1)
+		settings->minimap_block_size = 1;
 	settings->minimap_center.y = settings->minimap_size + settings->minimap_border_width;
 	settings->minimap_center.x = settings->screen_width - (settings->minimap_size + settings->minimap_border_width);
 	settings->minimap_full_size = (settings->minimap_size + settings->minimap_border_width) * 2;
+	if (settings->minimap_full_size > settings->screen_height / 2)
+	{
+		settings->minimap_size = (settings->screen_height / 2 - settings->minimap_border_width * 2) / 2;
+		settings->minimap_full_size = (settings->minimap_size + settings->minimap_border_width) * 2;
+	}
+	if (settings->minimap_full_size < 64) // Minimum size to ensure visibility
+	{
+		settings->minimap_size = (64 - settings->minimap_border_width * 2) / 2;
+		settings->minimap_full_size = (settings->minimap_size + settings->minimap_border_width) * 2;
+	}
+	// Calculate player size
 	settings->minimap_player_size = settings->minimap_block_size / 4;
-	printf("\
-        settings->minimap_block_size = %d\n\
-        settings->minimap_full_size = %d\n\
-        settings->minimap_center = (%d,%d)\n\
-        settings->minimap_player_size = %d\n\
-		   ",
+	if (settings->minimap_player_size < 2) // Ensure player is visible
+		settings->minimap_player_size = 2;
+	printf("Minimap Settings Updated:\n"
+		   "\tminimap_size: %d\n"
+		   "\tminimap_render_distance: %d\n"
+		   "\tminimap_block_size: %d\n"
+		   "\tminimap_full_size: %d\n"
+		   "\tminimap_center: (%d, %d)\n"
+		   "\tminimap_player_size: %d\n",
+		   settings->minimap_size,
+		   settings->minimap_render_distance,
 		   settings->minimap_block_size,
 		   settings->minimap_full_size,
 		   settings->minimap_center.x,
@@ -122,49 +143,61 @@ void show_inputs(t_data *data)
 		show_input(data, "Toggle minimap rays : R");
 		show_input(data, "Toggle minimap wall highlights : H");
 		show_input(data, "----");
-		show_input(data, "Increase/Decrease FOV : +/- or Mouse Wheel");
-		show_input(data, "Increase/Decrease Map size : Up/Down");
-		show_input(data, "Increase/Decrease Ray rate : 1/3");
+		show_input(data, "FOV : +/- or Mouse Wheel");
+		show_input(data, "Ray rate : 1/3");
+		show_input(data, "Map zoom : 4/6");
+		show_input(data, "Map size : Up/Down");
 	}
 	show_input(data, NULL);
 }
 
 void settings_hooks(int keycode, t_data *data)
 {
+	t_settings *settings = &data->settings;
 	if (keycode == XK_m)
-		data->settings.show_map = !data->settings.show_map;
+		settings->show_map = !settings->show_map;
 	if (keycode == XK_g)
-		data->settings.show_grid = !data->settings.show_grid;
+		settings->show_grid = !settings->show_grid;
 	if (keycode == XK_l)
-		data->settings.light = !data->settings.light;
+		settings->light = !settings->light;
 	if (keycode == XK_h)
-		data->settings.highlight_walls = !data->settings.highlight_walls;
+		settings->highlight_walls = !settings->highlight_walls;
 	if (keycode == XK_r)
-		data->settings.show_rays = !data->settings.show_rays;
+		settings->show_rays = !settings->show_rays;
 	if (keycode == ENTER || keycode == ENTER_PAD)
-		data->settings.show_inputs = !data->settings.show_inputs;
-	if (keycode == PLUS && data->settings.fov <= 90)
+		settings->show_inputs = !settings->show_inputs;
+	if (keycode == PLUS && settings->fov <= 90)
 	{
-		data->settings.fov += 1;
-		update_fov_settings(&data->settings);
+		settings->fov += 1;
+		update_fov_settings(settings);
 	}
-	if (keycode == MINUS && data->settings.fov >= 10)
+	if (keycode == MINUS && settings->fov >= 10)
 	{
-		data->settings.fov -= 1;
-		update_fov_settings(&data->settings);
+		settings->fov -= 1;
+		update_fov_settings(settings);
 	}
-	if (keycode == XK_Up && data->settings.minimap_full_size < data->settings.screen_height)
+	if (keycode == XK_Up && settings->minimap_full_size < settings->screen_height)
 	{
-		data->settings.minimap_size += 8;
-		update_minimap_settings(&data->settings);
+		settings->minimap_size += 8;
+		update_minimap_settings(settings);
 	}
-	if (keycode == XK_Down && data->settings.minimap_full_size > 124)
+	if (keycode == XK_Down && settings->minimap_full_size > 124)
 	{
-		data->settings.minimap_size -= 8;
-		update_minimap_settings(&data->settings);
+		settings->minimap_size -= 8;
+		update_minimap_settings(settings);
 	}
-	if (keycode == ONE && data->settings.minimap_ray_rate)
-		data->settings.minimap_ray_rate += 1;
-	if (keycode == THREE && data->settings.minimap_ray_rate > 1)
-		data->settings.minimap_ray_rate -= 1;
+	if (keycode == ONE && settings->minimap_ray_rate)
+		settings->minimap_ray_rate += 1;
+	if (keycode == THREE && settings->minimap_ray_rate > 1)
+		settings->minimap_ray_rate -= 1;
+	if (keycode == SIX && settings->minimap_render_distance > 1)
+	{
+		settings->minimap_render_distance -= 1;
+		update_minimap_settings(settings);
+	}
+	if (keycode == FOUR && settings->minimap_render_distance < 16)
+	{
+		settings->minimap_render_distance += 1;
+		update_minimap_settings(settings);
+	}
 }
