@@ -16,9 +16,8 @@
 #define FPS_INTERVAL	  1000
 /*colors*/
 #define PLAYER_COLOR	  RED
-#define WALL_COLOR		  DARK_BLUE
-#define FLOOR_COLOR		  BLUE
-#define CEILING_COLOR	  GRAY
+#define WALL_COLOR		  BLACK
+#define FLOOR_COLOR		  GRAY
 
 #define BLUE			  0xFF428f77
 #define DARK_BLUE		  0x143143
@@ -31,6 +30,7 @@
 #define WHITE			  0xFFFFFF
 #define BLACK			  0x000000
 #define GRAY			  0x808080
+#define BROWN			  0xFF8B4513
 /*error codes*/
 #define ERR_UNDEFINED	  0
 #define ERR_ARG_COUNT	  1

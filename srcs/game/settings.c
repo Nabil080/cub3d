@@ -15,18 +15,25 @@
 #define MINIMAP_SIZE	128
 #define RENDER_DISTANCE 4
 #define BORDER_WIDTH	2
-#define RAY_RATE		10
+#define RAY_RATE		1
 
 #define SHOW_INPUTS		1
 #define SHOW_MAP		1
-#define GRID			1
+#define GRID			0
 #define LIGHT			1
 #define SHOW_RAYS		1
 #define HIGHLIGHT_WALLS 1
 
 #define INPUT_COLOR		CYAN
+#define ESC				65307
 #define ENTER			65293
 #define ENTER_PAD		65421
+#define ONE				65436
+#define THREE			65435
+#define FOUR			65430
+#define SIX				65432
+#define SEVEN			65429
+#define NINE			65434
 #define PLUS			65451
 #define MINUS			65453
 
@@ -117,6 +124,7 @@ void show_inputs(t_data *data)
 		show_input(data, "----");
 		show_input(data, "Increase/Decrease FOV : +/- or Mouse Wheel");
 		show_input(data, "Increase/Decrease Map size : Up/Down");
+		show_input(data, "Increase/Decrease Ray rate : 1/3");
 	}
 	show_input(data, NULL);
 }
@@ -147,12 +155,16 @@ void settings_hooks(int keycode, t_data *data)
 	}
 	if (keycode == XK_Up && data->settings.minimap_full_size < data->settings.screen_height)
 	{
-		data->settings.minimap_size += 10;
+		data->settings.minimap_size += 8;
 		update_minimap_settings(&data->settings);
 	}
 	if (keycode == XK_Down && data->settings.minimap_full_size > 124)
 	{
-		data->settings.minimap_size -= 10;
+		data->settings.minimap_size -= 8;
 		update_minimap_settings(&data->settings);
 	}
+	if (keycode == ONE && data->settings.minimap_ray_rate)
+		data->settings.minimap_ray_rate += 1;
+	if (keycode == THREE && data->settings.minimap_ray_rate > 1)
+		data->settings.minimap_ray_rate -= 1;
 }
