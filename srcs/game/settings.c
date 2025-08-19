@@ -103,13 +103,19 @@ void show_inputs(t_data *data)
 	else
 	{
 		show_input(data, "---------- Inputs | Press Enter to hide ----------");
+		show_input(data, "Move : W/A/S/D");
+		show_input(data, "Rotate : Left/Right or Mouse");
+		show_input(data, "Sprint : Left Shift");
+		show_input(data, "Jump : Space");
+		show_input(data, "Crouch : C");
+		show_input(data, "---- Settings ----");
 		show_input(data, "Toggle minimap : M");
 		show_input(data, "Toggle light : L");
 		show_input(data, "Toggle minimap grid : G");
 		show_input(data, "Toggle minimap rays : R");
 		show_input(data, "Toggle minimap wall highlights : H");
 		show_input(data, "----");
-		show_input(data, "Increase/Decrease FOV : +/- or mouse wheel");
+		show_input(data, "Increase/Decrease FOV : +/- or Mouse Wheel");
 		show_input(data, "Increase/Decrease Map size : Up/Down");
 	}
 	show_input(data, NULL);
