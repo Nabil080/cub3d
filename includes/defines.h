@@ -74,6 +74,11 @@ typedef struct s_player
 		double angle;
 		double z_tilt;
 		double velocity;
+		double z_offset;
+
+		bool   is_jumping;
+		bool   is_crouching;
+		double z_velocity;
 } t_player;
 
 typedef struct s_textures
@@ -97,6 +102,8 @@ typedef struct s_controls
 		bool a;
 		bool s;
 		bool d;
+		bool crouch;
+		bool jump;
 		int	 l_r;
 		int	 u_d;
 } t_controls;

@@ -41,6 +41,10 @@ static int press_input(int keycode, t_data *data)
 		data->controls.d = true;
 	if (keycode == XK_Shift_L)
 		data->controls.sprint = true;
+	if (keycode == XK_space)
+		data->controls.jump = true;	  // Set jump flag
+	if (keycode == XK_c)
+		data->controls.crouch = true; // Set crouch flag
 	settings_hooks(keycode, data);
 	return (0);
 }
@@ -70,6 +74,10 @@ static int release_input(int keycode, t_data *data)
 		data->controls.d = false;
 	if (keycode == XK_Shift_L)
 		data->controls.sprint = false;
+	if (keycode == XK_space)
+		data->controls.jump = false;   // Clear jump flag
+	if (keycode == XK_c)
+		data->controls.crouch = false; // Clear crouch flag
 	return (0);
 }
 

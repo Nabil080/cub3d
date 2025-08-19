@@ -66,20 +66,33 @@ static void render_wall(t_data *data, t_ray ray, int i)
 	int j;
 	int z;
 
+	// Calculate wall height based on ray distance
 	wall_height = (data->settings.proj_plane_y / ray.distance);
+
+	// Calculate ceiling size, adjusted by player's z_offset (for jumping/crouching)
 	ceiling_size = (data->settings.screen_height >> 1) - (wall_height >> 1);
 	ceiling_size -= (data->player.z_tilt * 10);
+	ceiling_size += (int)(data->player.z_offset * wall_height);
+
+	// Render ceiling
 	y = 0;
-	while (y <= data->settings.screen_height && y <= ceiling_size)
+	while (y < data->settings.screen_height && y < ceiling_size)
 		put_game_pixel(vector(i, y++), data->conv_ceiling, data);
+
+	// Handle wall rendering
 	z = 0;
 	if (ceiling_size < 0)
-		z = -ceiling_size;
+		z = -ceiling_size; // Adjust for clipping when ceiling is off-screen
+
 	j = -1;
-	while (y + ++j <= data->settings.screen_height && y + j <= ceiling_size + wall_height)
+	while (y + ++j < data->settings.screen_height && y + j < ceiling_size + wall_height)
 		put_game_pixel(vector(i, y + j), get_wall_pixel(data, ray, j + z, wall_height), data);
+
+	// Update y to skip to the floor
 	y += j;
-	while (y <= data->settings.screen_height)
+
+	// Render floor
+	while (y < data->settings.screen_height)
 		put_game_pixel(vector(i, y++), data->conv_floor, data);
 }
 

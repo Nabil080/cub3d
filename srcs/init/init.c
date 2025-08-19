@@ -23,6 +23,7 @@ static void set_default_values(t_data *data)
 	data->controls.u_d = 0;
 	data->player.angle = 0;
 	data->player.z_tilt = 0;
+	data->player.z_offset = 0;
 	data->player.velocity = 0;
 	i = 0;
 	while (i < 6)

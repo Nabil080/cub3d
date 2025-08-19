@@ -58,6 +58,7 @@ int game_loop(t_data *data)
 	process_input(data);
 	rotate_player(data);
 	move_player(data);
+	jump_player(data);
 	if (data->settings.show_map)
 		draw_minimap(data);
 	draw_game(data);

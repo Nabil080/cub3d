@@ -47,3 +47,60 @@ void rotate_player(t_data *data)
 		data->player.angle += data->settings.rotation_speed * data->mlx.delta_time;
 	data->player.angle = nor_angle(data->player.angle);
 }
+
+void jump_player(t_data *data)
+{
+	const float gravity = -8.0;								// Gravity acceleration
+	const float jump_impulse = 2.5;							// Initial upward velocity for jump
+	const float crouch_target = -0.25;						// Target z_offset for crouching
+	const float crouch_speed = 5.0;							// Speed of crouching transition
+	const float ground_height = 0.0;						// Normal standing height
+	float		delta_time = data->mlx.delta_time / 1000.0; // Convert ms to seconds
+
+	// Initiate jump
+	if (data->controls.jump && !data->player.is_jumping && !data->player.is_crouching)
+	{
+		data->player.is_jumping = true;
+		data->player.z_velocity = jump_impulse;
+	}
+
+	// Handle crouching
+	if (data->controls.crouch && !data->player.is_jumping)
+		data->player.is_crouching = true;
+	else if (!data->controls.crouch)
+		data->player.is_crouching = false;
+
+	// Update jumping state
+	if (data->player.is_jumping)
+	{
+		data->player.z_velocity += gravity * delta_time;
+		data->player.z_offset += data->player.z_velocity * delta_time;
+
+		// Check for landing
+		if (data->player.z_offset <= ground_height && data->player.z_velocity < 0)
+		{
+			data->player.z_offset = ground_height;
+			data->player.z_velocity = 0.0;
+			data->player.is_jumping = false;
+		}
+	}
+	else if (data->player.is_crouching)
+	{
+		// Smoothly transition to crouch position
+		float target_z_offset = crouch_target;
+		data->player.z_offset += (target_z_offset - data->player.z_offset) * crouch_speed * delta_time;
+		data->player.z_velocity = 0.0f;
+	}
+	else
+	{
+		// Smoothly return to standing position
+		data->player.z_offset += (ground_height - data->player.z_offset) * crouch_speed * delta_time;
+		data->player.z_velocity = 0.0f;
+	}
+
+	// Clamp z_offset to prevent extreme values
+	if (data->player.z_offset < crouch_target)
+		data->player.z_offset = crouch_target;
+	if (data->player.z_offset > 1.0f) // Max jump height
+		data->player.z_offset = 1.0f;
+}

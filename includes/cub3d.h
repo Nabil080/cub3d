@@ -51,6 +51,7 @@ void	  draw_minimap(t_data *data);
 bool	  is_wall(t_data *data, int x, int y);
 void	  rotate_player(t_data *data);
 void	  move_player(t_data *data);
+void	  jump_player(t_data *data);
 /*game/render*/
 void	  draw_game(t_data *data);
 /*game/raycasting*/
