@@ -105,16 +105,16 @@ void jump_player(t_data *data)
 		data->player.z_velocity = 0.0f;
 	}
 
-	if (data->controls.sprint == false)
+	if (data->controls.sprint == false && data->player.stamina != 100)
 		data->player.stamina += data->settings.stamina_regen * delta_time;
 	// Clamp stamina
-	if (data->player.stamina < 0.0f)
-		data->player.stamina = 0.0f;
+	if (data->player.stamina < 0)
+		data->player.stamina = 0;
 	if (data->player.stamina > data->player.max_stamina || data->settings.stamina == false)
 		data->player.stamina = data->player.max_stamina;
 	// Clamp z_offset to prevent extreme values
 	if (data->player.z_offset < crouch_target)
 		data->player.z_offset = crouch_target;
-	if (data->player.z_offset > 1.0f) // Max jump height
-		data->player.z_offset = 1.0f;
+	if (data->player.z_offset > 1.0) // Max jump height
+		data->player.z_offset = 1.0;
 }
