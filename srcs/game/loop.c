@@ -1,5 +1,7 @@
 #include "cub3d.h"
 
+#include <stdio.h>
+
 /*
 seconds for a frame = one second / frames per second
 we wait for the remaining time to reach the desired fps
@@ -65,6 +67,8 @@ int game_loop(t_data *data)
 	draw_stamina_bar(data);
 	put_img(data->mlx, &data->mlx.game, 0, 0);
 	show_inputs(data);
+	if (data->settings.debug)
+		print_debugs(data);
 	sleep_based_on_max_fps(data, data->settings.max_fps);
 	show_fps(data);
 	return (0);

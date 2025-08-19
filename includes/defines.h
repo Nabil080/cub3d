@@ -161,6 +161,7 @@ typedef struct s_settings
 		bool	 highlight_walls;
 		bool	 show_inputs;
 		bool	 stamina;
+		bool	 debug;
 
 		// Adaptative settings
 		double	 fov_rad;			  // Changes with fov

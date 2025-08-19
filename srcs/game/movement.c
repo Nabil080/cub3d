@@ -32,8 +32,16 @@ static void safe_move(t_data *data, double x_multiplicator, double y_multiplicat
 
 void move_player(t_data *data)
 {
-	if (data->controls.l_r == 0 && data->controls.u_d == 0 && data->player.velocity > 0)
-		data->player.velocity -= data->settings.acceleration;
+	// clamping
+	if (data->controls.l_r == 0 && data->controls.u_d == 0)
+	{
+		if (data->player.velocity > 0)
+		{
+			data->player.velocity -= data->settings.acceleration;
+			if (data->player.velocity < 0)
+				data->player.velocity = 0;
+		}
+	}
 	else if (data->player.velocity < data->settings.max_speed)
 		data->player.velocity += data->settings.acceleration;
 	safe_move(data, -(data->controls.l_r) * sin(data->player.angle), 0);

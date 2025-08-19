@@ -62,5 +62,6 @@ void	  show_inputs(t_data *data);
 void	  settings_hooks(int keycode, t_data *data);
 void	  update_minimap_settings(t_settings *settings);
 void	  update_fov_settings(t_settings *settings);
+void	  print_debugs(t_data *data);
 
 #endif

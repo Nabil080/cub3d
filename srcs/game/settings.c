@@ -25,6 +25,7 @@
 #define SHOW_RAYS		1
 #define HIGHLIGHT_WALLS 1
 #define STAMINA			1
+#define DEBUG			0
 
 #define INPUT_COLOR		CYAN
 #define ESC				65307
@@ -110,6 +111,7 @@ void init_settings(t_data *data)
 	settings->highlight_walls = HIGHLIGHT_WALLS;
 	settings->show_inputs = SHOW_INPUTS;
 	settings->stamina = STAMINA;
+	settings->debug = DEBUG;
 	data->player.stamina = 100;
 	update_minimap_settings(settings);
 	update_fov_settings(settings);
@@ -141,6 +143,7 @@ void show_inputs(t_data *data)
 		show_input(data, "Sprint : Left Shift");
 		show_input(data, "Jump : Space");
 		show_input(data, "Crouch : C");
+		show_input(data, "Exit: Escape");
 		show_input(data, "---- Settings ----");
 		show_input(data, "Toggle minimap : M");
 		show_input(data, "Toggle light : L");
@@ -148,11 +151,13 @@ void show_inputs(t_data *data)
 		show_input(data, "Toggle minimap rays : R");
 		show_input(data, "Toggle minimap wall highlights : H");
 		show_input(data, "Toggle stamina : I");
+		show_input(data, "Toggle DEBUG : B");
 		show_input(data, "----");
 		show_input(data, "FOV : +/- or Mouse Wheel");
 		show_input(data, "Ray rate : 1/3");
 		show_input(data, "Map zoom : 4/6");
 		show_input(data, "Map size : Up/Down");
+		show_input(data, "---------- Inputs | Press Enter to hide ----------");
 	}
 	show_input(data, NULL);
 }
@@ -174,6 +179,8 @@ void settings_hooks(int keycode, t_data *data)
 		settings->show_inputs = !settings->show_inputs;
 	if (keycode == XK_i)
 		settings->stamina = !settings->stamina;
+	if (keycode == XK_b)
+		settings->debug = !settings->debug;
 	if (keycode == PLUS && settings->fov <= 90)
 	{
 		settings->fov += 1;
@@ -208,4 +215,58 @@ void settings_hooks(int keycode, t_data *data)
 		settings->minimap_render_distance += 1;
 		update_minimap_settings(settings);
 	}
+}
+
+static void print_debug(t_data *data, const char *str, bool reset)
+{
+	static int y = 20;
+	const int  x = data->settings.screen_width / 2;
+
+	if (reset)
+		y = 20;
+
+	if (str)
+	{
+		mlx_string_put(data->mlx.ptr, data->mlx.win, x, y, WHITE, (char *)str);
+		y += 20;
+	}
+}
+
+void print_debugs(t_data *data)
+{
+	static char buffer[200];
+
+	print_debug(data, "--- Screen ---", true);
+	snprintf(buffer, sizeof(buffer), "Screen width: %d", data->settings.screen_width);
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Screen height: %d", data->settings.screen_height);
+	print_debug(data, buffer, false);
+
+	print_debug(data, "--- Map ---", false);
+	snprintf(buffer, sizeof(buffer), "Map width: %zu", data->map_width);
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Map height: %zu", data->map_height);
+	print_debug(data, buffer, false);
+
+	print_debug(data, "--- Player ---", false);
+	snprintf(buffer, sizeof(buffer), "Position: (%f, %f)", data->player.pos.x, data->player.pos.y);
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Angle: %f", data->player.angle);
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Velocity: %f", data->player.velocity);
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Stamina: %f", data->player.stamina);
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Crouching: %s", data->player.is_crouching ? "true" : "false");
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Jumping: %s", data->player.is_jumping ? "true" : "false");
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Sprinting: %s", data->controls.sprint ? "true" : "false");
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Z tilt: %f", data->player.z_tilt);
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Z offset: %f", data->player.z_offset);
+	print_debug(data, buffer, false);
+	snprintf(buffer, sizeof(buffer), "Z velocity: %f", data->player.z_velocity);
+	print_debug(data, buffer, false);
 }
